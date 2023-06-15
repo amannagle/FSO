@@ -6,10 +6,16 @@ const Header= ()=>{
     </h1>
   )
 }
+const Statsline = ({text,value})=>{
+  return(
+    <p>{text} {value}</p>
+  )
+}
 const Stats =({good,bad,neutral})=>{
   let all=good+bad+neutral
   let average=(good-bad)/(good+bad+neutral) || 0
   let positive=good/(good+bad+neutral)*100 || 0
+  positive=positive+"%";
   if(all === 0)
   return(
     <h3>No feedback given</h3>
@@ -17,12 +23,13 @@ const Stats =({good,bad,neutral})=>{
   return(
     <>
     <h3>Statistics</h3>
-    <p>good {good}</p>
-    <p>netural {neutral}</p>
-    <p>bad {bad}</p>
-    <p>all {all}</p>
-    <p>average {average}</p>
-    <p>positive {positive+" %"}</p>
+    <Statsline text="good" value={good}/>
+    <Statsline text="neutral" value={neutral}/>
+    <Statsline text="bad" value={bad}/>
+    <Statsline text="all" value={all}/>
+    <Statsline text="average" value={average}/>
+    <Statsline text="good" value={good}/>
+    <Statsline text="positive" value={positive}/>
     </>
   )
 }
