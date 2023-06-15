@@ -7,12 +7,16 @@ const Header= ()=>{
   )
 }
 const Stats =({good,bad,neutral})=>{
+  let average=(good-bad)/(good+bad+neutral) || 0
+  let positive=good/(good+bad+neutral)*100 || 0
   return(
     <>
     <h3>Statistics</h3>
     <p>good {good}</p>
     <p>netural {neutral}</p>
     <p>bad {bad}</p>
+    <p>average {average}</p>
+    <p>positive {positive+" %"}</p>
     </>
   )
 }
