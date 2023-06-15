@@ -8,7 +8,7 @@ const Header= ()=>{
 }
 const Statsline = ({text,value})=>{
   return(
-    <p>{text} {value}</p>
+    <tr><td>{text}</td> <td>{value}</td></tr>
   )
 }
 const Stats =({good,bad,neutral})=>{
@@ -23,6 +23,7 @@ const Stats =({good,bad,neutral})=>{
   return(
     <>
     <h3>Statistics</h3>
+    <table border={3}>
     <Statsline text="good" value={good}/>
     <Statsline text="neutral" value={neutral}/>
     <Statsline text="bad" value={bad}/>
@@ -30,6 +31,7 @@ const Stats =({good,bad,neutral})=>{
     <Statsline text="average" value={average}/>
     <Statsline text="good" value={good}/>
     <Statsline text="positive" value={positive}/>
+    </table>
     </>
   )
 }
