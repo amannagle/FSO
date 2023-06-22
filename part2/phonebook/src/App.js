@@ -1,5 +1,34 @@
 import { useState } from "react";
+const Filter=({handleFilter,filterBy})=>{
+return(
+  <p>Filter people shown with <input value={filterBy} onChange={handleFilter}/></p>
+)
+}
 
+const Persons = ({persons})=>{
+  return(
+    <div>
+        {persons.map((person) => (
+          <p key={person.name}>{person.name} {person.phone}</p>
+        ))}
+      </div> 
+  )
+}
+
+const PersonForm = ({handleSubmit,newName,newNumber,handlechange,setNewNumber})=>{
+  return (
+    <form onSubmit={handleSubmit}>
+        <div>
+          name: <input value={newName} onChange={handlechange} />
+          <br/>
+          phone: <input value={newNumber} onChange={(e)=>{setNewNumber(e.target.value)}} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+  )
+}
 const App = () => {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas', phone: '040-123456', id: 1 },
   { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
@@ -23,7 +52,8 @@ const App = () => {
     console.log("submit clicked");
     const names = persons.map((person) => person.name);
     if (names.includes(newName.toLowerCase())) {
-      alert(`${newName} is already added to the phonebook`);
+      console.log(newName)
+      alert(`${newName} is already added to phonebook`);
       setNewName("");
       return;
     }
@@ -39,23 +69,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <p>Filter people shown with <input value={filterBy} onChange={handleFilter}/></p>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handlechange} />
-          <br/>
-          phone: <input value={newNumber} onChange={(e)=>{setNewNumber(e.target.value)}} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter handleFilter={handleFilter}
+      filterBy={filterBy}/>
+      <PersonForm
+      handleSubmit={handleSubmit}
+      newName={newName}
+      newNumber={newNumber}
+      handlechange={handlechange}
+      setNewNumber={setNewNumber}/>
+      
       <h2>Numbers</h2>
-      <div>
-        {personsFiltered.map((person) => (
-          <p key={person.name}>{person.name} {person.phone}</p>
-        ))}
-      </div>
+      <Persons persons={personsFiltered}
+     />
     </div>
   );
 };
