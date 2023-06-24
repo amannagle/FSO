@@ -1,29 +1,14 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "phone": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "phone": "39-44-5323523",
-      "id": 2
-    },
-    {
       "name": "Madho",
       "phone": "91748-6000",
       "id": 5
     },
     {
-      "name": "Maureen",
-      "phone": "71-36987541",
+      "name": "Mark",
+      "phone": "7415-2256434",
       "id": 6
-    },
-    {
-      "name": "Roxy",
-      "phone": "782421111",
-      "id": 7
     }
   ]
 }

@@ -8,8 +8,8 @@ const add=(obj)=>{
    return axios.post(baseUrl,obj).then(response=>response.data)
 }
 
-const deletePerson = (person,id)=>{
-    return axios.delete(`${baseUrl}/${id}`).then(response=>response.data)
+const deletePerson = (id)=>{
+    return axios.delete(`${baseUrl}/${id}`)
 }
 const Phoneservice={getAll,add,deletePerson}
 export default Phoneservice;

@@ -55,18 +55,21 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterBy, setFilterBy] = useState("");
-
+  console.log("filter by value is",filterBy)
   const handleDelete = (person) => {
-    if(window.confirm(`delete ${person.name} ?`))
-    {
-    console.log("we need to delete person",person);
-    const id=person.id;
-    console.log("This id will be deleted",id);
-    Phoneservice.deletePerson(person,person.id).then(response=>
-      setPersons(persons.filter((person)=>person.id!==id))
-    )
+    if (window.confirm(`delete ${person.name} ?`)) {
+      console.log("we need to delete person", person);
+      const id = person.id;
+      console.log("This id will be deleted", id);
+      Phoneservice.deletePerson(id).then((response) =>
+        setPersons(persons.filter((person) => person.id !== id))
+      )
+      .catch((error)=>
+        alert("id is not present or already deleted")
+      );
     }
   };
+  
   
   const getPersons = () => {
     Phoneservice.getAll()
@@ -81,7 +84,7 @@ const App = () => {
     person.name.toLowerCase().startsWith(filterBy.toLowerCase())
   );
   const handleFilter = (e) => {
-    setFilterBy(e.target);
+    setFilterBy(e.target.value);
     console.log(personsFiltered);
   };
   const handleSubmit = (e) => {
