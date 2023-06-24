@@ -11,5 +11,9 @@ const add=(obj)=>{
 const deletePerson = (id)=>{
     return axios.delete(`${baseUrl}/${id}`)
 }
-const Phoneservice={getAll,add,deletePerson}
+
+const update = (id, newObject) => {
+    return axios.put(`${baseUrl}/${id}`, newObject).then(response=>response.data)
+  }
+const Phoneservice={getAll,add,deletePerson,update}
 export default Phoneservice;

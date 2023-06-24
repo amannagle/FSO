@@ -55,6 +55,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterBy, setFilterBy] = useState("");
+  console.log("persons object is",persons);
   console.log("filter by value is",filterBy)
   const handleDelete = (person) => {
     if (window.confirm(`delete ${person.name} ?`)) {
@@ -81,7 +82,7 @@ const App = () => {
     setNewName(e.target.value);
   };
   let personsFiltered = persons.filter((person) =>
-    person.name.toLowerCase().startsWith(filterBy.toLowerCase())
+    person?.name?.toLowerCase()?.startsWith(filterBy.toLowerCase())
   );
   const handleFilter = (e) => {
     setFilterBy(e.target.value);
@@ -93,11 +94,23 @@ const App = () => {
     const names = persons.map((person) => person.name.toLowerCase());
     console.log(names);
     if (names.includes(newName.toLowerCase())) {
-      console.log("name was already present")
-      console.log(newName);
-      alert(`${newName} is already added to phonebook`);
-      setNewName("");
-      return;
+      if(window.confirm(`${newName} is already present in the Phonebook, replace old number with new ?`))
+      {
+        const obj=persons.find(person=>person.name===newName);
+        const id=obj.id;
+        console.log(`${id} needs to be updated with ${newNumber} and the old object is`,obj)
+        const newobj={...obj,phone:newNumber};
+        console.log(newobj,'is the updated object')
+        Phoneservice.update(id,newobj)
+        .then(response => { 
+          setPersons(persons.map(person => person.id !== id ? person : response))
+          setNewName("");
+          setNewNumber("");
+        })
+        return
+      }
+      else
+      return
     }
     console.log("name wasnt present")
     const newPerson = {
