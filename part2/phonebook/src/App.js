@@ -48,7 +48,7 @@ const App = () => {
     console.log(e.target.value);
     setNewName(e.target.value);
   };
-  let  personsFiltered=persons.filter(person=>person.name.toLowerCase().startsWith(filterBy.toLowerCase()))
+  let personsFiltered=persons.filter(person=>person.name.toLowerCase().startsWith(filterBy.toLowerCase()))
   const handleFilter=(e)=>{
      setFilterBy(e.target.value);
     
@@ -58,6 +58,7 @@ const App = () => {
     e.preventDefault();
     console.log("submit clicked");
     const names = persons.map((person) => person.name);
+    console.log(names);
     if (names.includes(newName.toLowerCase())) {
       console.log(newName)
       alert(`${newName} is already added to phonebook`);
@@ -69,9 +70,13 @@ const App = () => {
       phone:newNumber
     };
     console.log("person object", newPerson);
-    setPersons([...persons, newPerson]);
-    setNewName("");
-    setNewNumber("");
+    let url = "http://localhost:3001/persons"
+    axios.post(url,newPerson).then(response=>{
+      setPersons([...persons,response.data])
+      setNewName("");
+      setNewNumber("");
+    })
+    
   };
   return (
     <div>
