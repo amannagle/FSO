@@ -10,6 +10,15 @@ const Notification = ({message})=>{
     <h2 className="message">{message}</h2>
   )
 }
+
+const Error = ({error})=>{
+  if(!error)
+  {return}
+  return(
+    
+    <h2 className="error">{error}</h2>
+  )
+}
 const Filter = ({ handleFilter, filterBy }) => {
   return (
     <p>
@@ -65,6 +74,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterBy, setFilterBy] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   console.log("persons object is",persons);
   console.log("filter by value is",filterBy)
   const handleDelete = (person) => {
@@ -75,9 +85,13 @@ const App = () => {
       Phoneservice.deletePerson(id).then((response) =>
         setPersons(persons.filter((person) => person.id !== id))
       )
-      .catch((error)=>
-        alert("id is not present or already deleted")
-      );
+      .catch((error)=>{
+       setError(`Information of ${person.name} has already been deleted`)
+       setPersons(persons.filter(person => person.id !== id))
+       setTimeout(()=>{
+        setError("")
+      },10000)
+    })
     }
   };
   
@@ -147,6 +161,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={message} />
+      <Error error={error} />
       <Filter handleFilter={handleFilter} filterBy={filterBy} />
       <PersonForm
         handleSubmit={handleSubmit}
