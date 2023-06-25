@@ -1,6 +1,15 @@
 import { useState } from "react";
 import Phoneservice from "./Service/Phone";
 import { useEffect } from "react";
+
+const Notification = ({message})=>{
+  if(!message)
+  {return}
+  return(
+    
+    <h2 className="message">{message}</h2>
+  )
+}
 const Filter = ({ handleFilter, filterBy }) => {
   return (
     <p>
@@ -55,6 +64,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterBy, setFilterBy] = useState("");
+  const [message, setMessage] = useState("");
   console.log("persons object is",persons);
   console.log("filter by value is",filterBy)
   const handleDelete = (person) => {
@@ -106,6 +116,10 @@ const App = () => {
           setPersons(persons.map(person => person.id !== id ? person : response))
           setNewName("");
           setNewNumber("");
+          setMessage(`${obj.name} Updated`)
+          setTimeout(()=>{
+            setMessage("")
+          },10000)
         })
         return
       }
@@ -120,13 +134,19 @@ const App = () => {
     console.log("person object", newPerson);
     Phoneservice.add(newPerson).then(response=>{
       setPersons([...persons, response]);
+      setMessage(`${newPerson.name} Added`)
+      setTimeout(()=>{
+        setMessage("")
+      },10000)
       setNewName("");
       setNewNumber("");
+      
     })
   };
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter handleFilter={handleFilter} filterBy={filterBy} />
       <PersonForm
         handleSubmit={handleSubmit}
