@@ -1,6 +1,16 @@
 const express = require("express");
+const morgan = require("morgan")
 const app = express();
-app.use(express.json())
+
+app.use(express.json());
+
+
+app.use(morgan('combined'))
+
+app.get('/', function (req, res) {
+  res.send('hello, world!')
+})
+
 let persons = [
   {
     id: 1,
@@ -29,29 +39,31 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.post("/api/persons", (request, response) => {
-    const id=Math.ceil(Math.random()*1000000);
-    if(!request.body.name || !request.body.phone)
-    {
-        return response.status(400).json({
-            error:"phone or name is missing"
-        }
-        )
-    }
+  const id = Math.ceil(Math.random() * 1000000);
+  if (!request.body.name || !request.body.phone) {
+    return response.status(400).json({
+      error: "phone or name is missing",
+    });
+  }
 
-    if(persons.map(person=>person.name.toLowerCase()).includes(request.body.name.toLowerCase()))
-    {
-        return response.status(400).json({
-            error:"name must be unique"
-        })
-    }
-    const person = {
-        name:request.body.name,
-        number:request.body.number,
-        id:id
-    }
-    persons=persons.concat(person)
-    response.json(person);
-  });
+  if (
+    persons
+      .map((person) => person.name.toLowerCase())
+      .includes(request.body.name.toLowerCase())
+  ) {
+    return response.status(400).json({
+      error: "name must be unique",
+    });
+  }
+
+  const person = {
+    name: request.body.name,
+    phone: request.body.phone,
+    id: id,
+  };
+  persons = persons.concat(person);
+  response.json(person);
+});
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   const person = persons.find((person) => person.id === id);
@@ -64,7 +76,7 @@ app.get("/api/persons/:id", (request, response) => {
 
 app.delete("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
-  persons = persons.filter(person=>person.id !== id);
+  persons = persons.filter((person) => person.id !== id);
   response.status(204).end();
 });
 app.get("/info", (request, response) => {
@@ -72,8 +84,7 @@ app.get("/info", (request, response) => {
     <p>${new Date()}</p>`);
 });
 
-
 const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`server running on ${PORT}`);
-});
+app.listen(PORT,(request,response)=>{
+  console.log(`server running on ${PORT}`)
+})
