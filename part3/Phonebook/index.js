@@ -4,13 +4,8 @@ const app = express();
 
 app.use(express.json());
 
-
-app.use(morgan('combined'))
-
-app.get('/', function (req, res) {
-  res.send('hello, world!')
-})
-
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+app.use(morgan(':body'));
 let persons = [
   {
     id: 1,
