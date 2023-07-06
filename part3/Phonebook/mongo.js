@@ -14,13 +14,19 @@ const url =
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
-const noteSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   name: String,
   phone: String,
 })
 
-const Person = mongoose.model('Person', noteSchema)
-if(process.argv.length==3)
+personSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+/* if(process.argv.length==3)
 {
     Person.find({}).then(result => {
         console.log("Phonebook")
@@ -41,4 +47,5 @@ person.save().then(result => {
   console.log(`added ${person.name} number ${person.phone} to phonebook`)
   mongoose.connection.close()
 })
-}
+} */
+module.exports = mongoose.model("Person",personSchema);
