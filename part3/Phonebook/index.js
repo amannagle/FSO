@@ -1,7 +1,8 @@
 const express = require("express");
 const morgan = require("morgan")
+const cors = require('cors')
 const app = express();
-
+app.use(cors())
 app.use(express.json());
 const Person = require("./mongo.js")
 morgan.token('body', (req, res) => JSON.stringify(req.body));
@@ -16,30 +17,15 @@ app.get("/api/persons", (request, response) => {
  
 
 app.post("/api/persons", (request, response) => {
-  const id = Math.ceil(Math.random() * 1000000);
-  if (!request.body.name || !request.body.phone) {
-    return response.status(400).json({
-      error: "phone or name is missing",
-    });
-  }
 
-  if (
-    persons
-      .map((person) => person.name.toLowerCase())
-      .includes(request.body.name.toLowerCase())
-  ) {
-    return response.status(400).json({
-      error: "name must be unique",
-    });
-  }
-
-  const person = {
+  const person = new Person({
     name: request.body.name,
     phone: request.body.phone,
-    id: id,
-  };
-  persons = persons.concat(person);
-  response.json(person);
+  });
+  person.save().then(result => {
+    console.log(`added ${person.name} number ${person.phone} to phonebook`)
+  })
+  response.json(person)
 });
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);

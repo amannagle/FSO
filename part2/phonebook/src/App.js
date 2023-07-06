@@ -117,30 +117,6 @@ const App = () => {
     console.log("submit clicked");
     const names = persons.map((person) => person.name.toLowerCase());
     console.log(names);
-    if (names.includes(newName.toLowerCase())) {
-      if(window.confirm(`${newName} is already present in the Phonebook, replace old number with new ?`))
-      {
-        const obj=persons.find(person=>person.name===newName);
-        const id=obj.id;
-        console.log(`${id} needs to be updated with ${newNumber} and the old object is`,obj)
-        const newobj={...obj,phone:newNumber};
-        console.log(newobj,'is the updated object')
-        Phoneservice.update(id,newobj)
-        .then(response => { 
-          setPersons(persons.map(person => person.id !== id ? person : response))
-          setNewName("");
-          setNewNumber("");
-          setMessage(`${obj.name} Updated`)
-          setTimeout(()=>{
-            setMessage("")
-          },10000)
-        })
-        return
-      }
-      else
-      return
-    }
-    console.log("name wasnt present")
     const newPerson = {
       name: newName,
       phone: newNumber,
@@ -154,7 +130,6 @@ const App = () => {
       },10000)
       setNewName("");
       setNewNumber("");
-      
     })
   };
   return (
